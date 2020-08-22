@@ -15,11 +15,9 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Printf("failed to load .env file: %v", err)
 	}
-
 	mysql.ConnectLocalSQL()
-
 	router := httprouter.New()
-	router.POST("/todos", handler.HomePage)
+	router.POST("/todos", handler.CreateTodo)
 	router.GET("/pin", handler.Pin)
 	log.Fatal(http.ListenAndServe(":8081", router))
 }
