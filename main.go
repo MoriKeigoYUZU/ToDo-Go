@@ -16,8 +16,7 @@ func main() {
 		log.Printf("failed to load .env file: %v", err)
 	}
 
-	db := mysql.ConnectLocalSQL()
-	defer db.Close()
+	mysql.ConnectLocalSQL()
 
 	router := httprouter.New()
 	router.POST("/todos", handler.HomePage)

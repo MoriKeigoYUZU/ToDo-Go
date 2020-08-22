@@ -9,8 +9,12 @@ import (
 	_ "github.com/go-sql-driver/mysql" //使わない
 )
 
+var (
+	DB = &sql.DB{}
+)
+
 // connectLocalSQL localのmysqlのコネクション作成
-func ConnectLocalSQL() *sql.DB {
+func ConnectLocalSQL() {
 	log.Println("connectDB: local")
 	//環境変数->コンピュータ上に設定されている設定用変数
 	dbuser := os.Getenv("MYSQL_USER")
@@ -30,9 +34,9 @@ func ConnectLocalSQL() *sql.DB {
 		dbname = "dbname"
 	}
 	dataSource := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?parseTime=true", dbuser, dbpassword, dbhost, dbname)
-	db, err := sql.Open("mysql", dataSource)
+	var err error
+	DB, err = sql.Open("mysql", dataSource)
 	if err != nil {
 		panic(err.Error())
 	}
-	return db
 }

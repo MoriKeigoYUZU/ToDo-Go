@@ -5,7 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
+
+	"github.com/ToDo-Go/db/mysql"
 
 	"github.com/julienschmidt/httprouter"
 )
@@ -58,5 +61,10 @@ func HomePage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 }
 
 func Pin(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	title := "牛乳買う"
+	_, err := mysql.DB.Exec("INSERT INTO todo(title) VALUES (?)", title)
+	if err != nil {
+		log.Fatalln(err)
+	}
 	fmt.Fprintf(w, "Hello")
 }
