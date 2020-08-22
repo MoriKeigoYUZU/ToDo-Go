@@ -9,7 +9,6 @@ import (
 	"net/http"
 
 	"github.com/ToDo-Go/db/mysql"
-
 	"github.com/julienschmidt/httprouter"
 )
 
