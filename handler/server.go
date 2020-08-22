@@ -20,6 +20,7 @@ import (
 //受け取ったときの箱
 
 type Todo struct {
+	Id    int    `json:"id"`
 	Title string `json:"title"`
 }
 
@@ -48,6 +49,32 @@ func CreateTodo(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	//Encode 構造体からJSON
 	//NewEncoder(w)勝手に流してくれる
 	if err := json.NewEncoder(w).Encode(request); err != nil {
+		panic(err)
+	}
+}
+
+func GetTodo(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	rows, err := mysql.DB.Query("SELECT * FROM todo")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	todoAll := make([]Todo, 0, 5)
+	for rows.Next() {
+		var todo Todo
+		if err := rows.Scan(&todo.Id, &todo.Title); err != nil {
+			log.Fatal(err)
+		}
+		todoAll = append(todoAll, todo)
+	}
+
+	//w : ユーザに流したい情報をセットできる
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	//Encode 構造体からJSON
+	//NewEncoder(w)勝手に流してくれる
+	if err := json.NewEncoder(w).Encode(todoAll); err != nil {
 		panic(err)
 	}
 }
