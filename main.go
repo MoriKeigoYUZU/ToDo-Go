@@ -18,6 +18,7 @@ func main() {
 	mysql.ConnectLocalSQL()
 	router := httprouter.New()
 	router.POST("/todos", handler.CreateTodo)
+	router.GET("/todos", handler.GetTodo)
 	router.GET("/pin", handler.Pin)
 	log.Fatal(http.ListenAndServe(":8081", router))
 }
