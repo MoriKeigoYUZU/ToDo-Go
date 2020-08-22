@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/julienschmidt/httprouter"
 )
 
 //メモ
@@ -25,7 +27,7 @@ type Todo struct {
 	Name string `json:"name"`
 }
 
-func HomePage(w http.ResponseWriter, r *http.Request) {
+func HomePage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	body := r.Body
 	defer body.Close()
 	buf := new(bytes.Buffer)                      //受け取り口
@@ -53,5 +55,8 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Printf("%+v", request)
 	fmt.Println("Endpoint Hit: homePage")
+}
 
+func Pin(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	fmt.Fprintf(w, "Hello")
 }
