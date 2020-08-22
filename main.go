@@ -34,11 +34,24 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	var request ReqBody
+
+	//UnmarshalJSONから構造体
 	if err := json.Unmarshal(buf.Bytes(), &request); err != nil { //buf.Bytes() ->(マッピング) 構造体
 		return
 	}
 
-	fmt.Fprintf(w, "Welcome to the HomePage!")
+	//w : ユーザに流したい情報をセットできる
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8") // <- Added
+	w.Header().Set("Set-Cookie", "sessionId=38afes7a8")
+	w.Header().Set("hoge", "sessionId=38afes7a8")
+	w.WriteHeader(http.StatusOK) // <- Added
+
+	//Encode 構造体からJSON
+	//NewEncoder(w)勝手に流してくれる
+	if err := json.NewEncoder(w).Encode(request); err != nil {
+		panic(err)
+	}
+
 	fmt.Printf("%+v", request)
 	fmt.Println("Endpoint Hit: homePage")
 
