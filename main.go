@@ -21,4 +21,5 @@ func main() {
 	router.GET("/todos", handler.GetTodo)
 	router.GET("/pin", handler.Pin)
 	log.Fatal(http.ListenAndServe(":8081", router))
+	fmt.Printf("hge")
 }
